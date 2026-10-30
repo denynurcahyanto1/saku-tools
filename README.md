@@ -64,7 +64,7 @@ The workflow uses GitHub's Pages artifact deployment pattern with `pages: write`
 ├── .github/workflows/deploy.yml
 ├── assets/
 │   ├── css/styles.css
-│   ├── icons/icon.svg, icon-192.png, icon-512.png
+│   ├── icons/icon.svg, icon-512.png
 │   └── js/
 │       ├── app.js
 │       ├── core.js
