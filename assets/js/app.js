@@ -348,7 +348,7 @@ function formatBytes(bytes) {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
-async async function getImageBitmap(file) {
+async function getImageBitmap(file) {
   if (!file) throw new Error(language === 'id' ? 'Pilih file gambar terlebih dahulu.' : 'Choose an image first.');
   if (!['image/jpeg','image/png','image/webp'].includes(file.type)) throw new Error(language === 'id' ? 'Format yang didukung: JPG, PNG, WebP.' : 'Supported formats: JPG, PNG, WebP.');
   if (file.size > 20 * 1024 * 1024) throw new Error(language === 'id' ? 'Ukuran file maksimal 20 MB.' : 'Maximum file size is 20 MB.');
@@ -363,7 +363,7 @@ async async function getImageBitmap(file) {
 function canvasToBlob(canvas, type, quality) {
   return new Promise((resolve, reject) => canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('The browser could not export this image format.')), type, quality));
 }
-async async function renderImage(file, width, height, type, quality) {
+async function renderImage(file, width, height, type, quality) {
   const bitmap = await getImageBitmap(file);
   try {
     if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 8192 || height > 8192) throw new RangeError('Image dimensions must be between 1 and 8192 pixels.');
