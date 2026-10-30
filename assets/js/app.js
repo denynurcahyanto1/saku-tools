@@ -380,6 +380,11 @@ async function renderImage(file, width, height, type, quality) {
 }
 function outputExtension(type) { return type === 'image/webp' ? 'webp' : type === 'image/png' ? 'png' : 'jpg'; }
 
+$('#compress-file').addEventListener('change', () => {
+  clearImageResult('compress');
+  const file = $('#compress-file').files[0];
+  $('#compress-status').textContent = file ? `${file.name} · ${formatBytes(file.size)}` : '';
+});
 $('#compress-quality').addEventListener('input', () => { $('#compress-quality-value').textContent = `${$('#compress-quality').value}%`; });
 $('#run-compress').addEventListener('click', async () => {
   const status = $('#compress-status'); clearImageResult('compress'); status.textContent = language === 'id' ? 'Memproses gambar…' : 'Processing image…';
@@ -397,13 +402,25 @@ let resizeOriginal = null;
 $('#resize-file').addEventListener('change', async () => {
   try {
     const file = $('#resize-file').files[0];
-    if (!file) { resizeOriginal = null; clearImageResult('resize'); return; }
     clearImageResult('resize');
+    $('#resize-status').textContent = '';
+    if (!file) {
+      resizeOriginal = null;
+      $('#resize-width').value = '';
+      $('#resize-height').value = '';
+      return;
+    }
     const bitmap = await getImageBitmap(file);
     resizeOriginal = { width: bitmap.width, height: bitmap.height };
     $('#resize-width').value = bitmap.width; $('#resize-height').value = bitmap.height;
     bitmap.close(); $('#resize-status').textContent = `${resizeOriginal.width} × ${resizeOriginal.height}px`;
-  } catch (error) { resizeOriginal = null; $('#resize-status').textContent = error.message; }
+  } catch (error) {
+    resizeOriginal = null;
+    clearImageResult('resize');
+    $('#resize-width').value = '';
+    $('#resize-height').value = '';
+    $('#resize-status').textContent = error.message;
+  }
 });
 $('#resize-width').addEventListener('input', () => {
   if ($('#resize-ratio').checked && resizeOriginal && Number($('#resize-width').value) > 0) $('#resize-height').value = Math.max(1, Math.round(Number($('#resize-width').value) * resizeOriginal.height / resizeOriginal.width));
