@@ -297,23 +297,33 @@ function clearImageResult(prefix) {
   download.removeAttribute('href');
   result.hidden = true;
 }
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('Could not read generated image.'));
+    reader.onerror = () => reject(new Error('Could not read generated image.'));
+    reader.readAsDataURL(blob);
+  });
+}
 async function setImageResult(prefix, blob, filename, originalSize, width, height) {
   if (!(blob instanceof Blob) || blob.size === 0) throw new Error(language === 'id' ? 'Hasil gambar kosong. Coba format lain.' : 'The generated image is empty. Try another format.');
   const preview = $(`#${prefix}-preview`);
   const download = $(`#${prefix}-download`);
   const result = $(`#${prefix}-result`);
   const previous = imageObjectUrls.get(prefix);
-  const url = URL.createObjectURL(blob);
+  const downloadUrl = URL.createObjectURL(blob);
   try {
+    // Use a data URL for preview: this avoids stale/blocked blob URLs in browser or PWA caches.
+    const previewUrl = await blobToDataUrl(blob);
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error(language === 'id' ? 'Pratinjau gagal dimuat. Coba lagi atau gunakan format lain.' : 'The preview could not be loaded. Try again or choose another format.')), 10000);
       preview.onload = () => { clearTimeout(timeout); resolve(); };
       preview.onerror = () => { clearTimeout(timeout); reject(new Error(language === 'id' ? 'Browser tidak dapat menampilkan hasil gambar.' : 'The browser could not display the generated image.')); };
-      preview.src = url;
+      preview.src = previewUrl;
       if (preview.complete && preview.naturalWidth > 0) { clearTimeout(timeout); resolve(); }
     });
-    imageObjectUrls.set(prefix, url);
-    download.href = url;
+    imageObjectUrls.set(prefix, downloadUrl);
+    download.href = downloadUrl;
     download.download = filename;
     const change = originalSize > 0 ? ((1 - blob.size / originalSize) * 100) : 0;
     const sizeNote = prefix === 'compress'
@@ -323,7 +333,7 @@ async function setImageResult(prefix, blob, filename, originalSize, width, heigh
     result.hidden = false;
     if (previous) URL.revokeObjectURL(previous);
   } catch (error) {
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(downloadUrl);
     preview.removeAttribute('src');
     download.removeAttribute('href');
     result.hidden = true;
