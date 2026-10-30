@@ -14,7 +14,7 @@ This release expands SakuTools from seven to thirteen tools.
 ## Improvements
 
 - Updated the service-worker cache version so v1.1 assets are fetched.
-- Added 192×192 and 512×512 PNG app icons for wider PWA installation compatibility.
+- Added a 512×512 PNG app icon alongside the SVG icon for PWA installation.
 - Added automated tests for color conversion, timestamp conversion, and QR matrix generation.
 - QR generator library is vendored locally under its MIT license; no third-party CDN is used.
 - GitHub Pages deployment now runs automated tests before publishing the site.
