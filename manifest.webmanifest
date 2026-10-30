@@ -1,0 +1,13 @@
+{
+  "name": "SakuTools — Small tools, big help",
+  "short_name": "SakuTools",
+  "description": "Free, privacy-first everyday tools that run in your browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10131b",
+  "theme_color": "#10131b",
+  "icons": [
+    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
