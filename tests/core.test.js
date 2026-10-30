@@ -63,3 +63,22 @@ test('discount calculator validates inputs and computes final price', () => {
   assert.throws(() => calculateDiscount(-1, 10), RangeError);
   assert.throws(() => calculateDiscount(100, 101), RangeError);
 });
+
+
+test('HEX colors normalize and convert to RGB', async () => {
+  const { normalizeHexColor, hexToRgb, rgbToHsl } = await import('../assets/js/core.js');
+  assert.equal(normalizeHexColor('#abc'), '#AABBCC');
+  assert.deepEqual(hexToRgb('#ff0000'), { r: 255, g: 0, b: 0 });
+  assert.deepEqual(rgbToHsl(255, 0, 0), { h: 0, s: 100, l: 50 });
+  assert.throws(() => normalizeHexColor('nope'), /valid/);
+  assert.throws(() => rgbToHsl(300, 0, 0), RangeError);
+});
+
+test('Unix timestamps convert seconds and milliseconds', async () => {
+  const { timestampToDate, dateToTimestamp } = await import('../assets/js/core.js');
+  assert.equal(timestampToDate('1735689600').iso, '2025-01-01T00:00:00.000Z');
+  assert.equal(timestampToDate('1735689600000').seconds, 1735689600);
+  assert.equal(dateToTimestamp('2025-01-01T00:00:00Z').milliseconds, 1735689600000);
+  assert.throws(() => timestampToDate('abc'), /number/);
+  assert.throws(() => dateToTimestamp(''), /date/);
+});
