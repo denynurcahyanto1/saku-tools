@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sakutools-shell-v2';
+const CACHE_NAME = 'sakutools-shell-v3';
 const APP_SHELL = [
   './', './index.html', './manifest.webmanifest',
   './assets/css/styles.css', './assets/js/app.js', './assets/js/core.js', './assets/js/vendor/qrcode.mjs', './assets/js/vendor/qrcode_UTF8.mjs',
