@@ -1,8 +1,8 @@
-const CACHE_NAME = 'sakutools-shell-v1';
+const CACHE_NAME = 'sakutools-shell-v2';
 const APP_SHELL = [
   './', './index.html', './manifest.webmanifest',
-  './assets/css/styles.css', './assets/js/app.js', './assets/js/core.js',
-  './assets/icons/icon.svg',
+  './assets/css/styles.css', './assets/js/app.js', './assets/js/core.js', './assets/js/vendor/qrcode.mjs', './assets/js/vendor/qrcode_UTF8.mjs',
+  './assets/icons/icon.svg', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
 ];
 
 self.addEventListener('install', (event) => {
