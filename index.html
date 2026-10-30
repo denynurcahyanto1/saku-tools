@@ -69,11 +69,17 @@
           <button class="tool-nav" type="button" data-tool="password"><span class="nav-icon">✳</span><span data-i18n="passwordTool">Password</span><span class="nav-arrow">↗</span></button>
           <button class="tool-nav" type="button" data-tool="uuid"><span class="nav-icon">#</span><span>UUID</span><span class="nav-arrow">↗</span></button>
           <button class="tool-nav" type="button" data-tool="discount"><span class="nav-icon">%</span><span data-i18n="discountTool">Discount calculator</span><span class="nav-arrow">↗</span></button>
+          <button class="tool-nav" type="button" data-tool="qr"><span class="nav-icon">▦</span><span data-i18n="qrTool">QR generator</span><span class="nav-arrow">↗</span></button>
+          <button class="tool-nav" type="button" data-tool="color"><span class="nav-icon">◉</span><span data-i18n="colorTool">Color picker</span><span class="nav-arrow">↗</span></button>
+          <button class="tool-nav" type="button" data-tool="compress"><span class="nav-icon">▧</span><span data-i18n="compressTool">Image compressor</span><span class="nav-arrow">↗</span></button>
+          <button class="tool-nav" type="button" data-tool="resize"><span class="nav-icon">⤢</span><span data-i18n="resizeTool">Image resizer</span><span class="nav-arrow">↗</span></button>
+          <button class="tool-nav" type="button" data-tool="markdown"><span class="nav-icon">M↓</span><span data-i18n="markdownTool">Markdown editor</span><span class="nav-arrow">↗</span></button>
+          <button class="tool-nav" type="button" data-tool="timestamp"><span class="nav-icon">◷</span><span data-i18n="timestampTool">Timestamp converter</span><span class="nav-arrow">↗</span></button>
         </aside>
 
         <div class="tool-workspace">
           <section class="tool-panel active" id="panel-text" data-panel="text">
-            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="everydayCategory">EVERYDAY</span><h3 data-i18n="textTitle">Text toolkit</h3><p data-i18n="textDesc">Count, clean, and transform text in seconds.</p></div><span class="panel-number">01 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="everydayCategory">EVERYDAY</span><h3 data-i18n="textTitle">Text toolkit</h3><p data-i18n="textDesc">Count, clean, and transform text in seconds.</p></div><span class="panel-number">01 / 13</span></div>
             <label for="text-input" data-i18n="yourText">Your text</label>
             <textarea id="text-input" rows="7" placeholder="Paste or type your text here…" data-i18n-placeholder="textPlaceholder"></textarea>
             <div class="text-stats"><div><strong id="word-count">0</strong><span data-i18n="words">Words</span></div><div><strong id="char-count">0</strong><span data-i18n="characters">Characters</span></div><div><strong id="line-count">0</strong><span data-i18n="lines">Lines</span></div><div><strong id="reading-time">0 min</strong><span data-i18n="readingTime">Reading time</span></div></div>
@@ -89,7 +95,7 @@
           </section>
 
           <section class="tool-panel" id="panel-json" data-panel="json" hidden>
-            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3>JSON formatter</h3><p data-i18n="jsonDesc">Validate, prettify, or minify JSON.</p></div><span class="panel-number">02 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3>JSON formatter</h3><p data-i18n="jsonDesc">Validate, prettify, or minify JSON.</p></div><span class="panel-number">02 / 13</span></div>
             <label for="json-input" data-i18n="inputJson">Input JSON</label>
             <textarea id="json-input" rows="8" spellcheck="false" placeholder='{"hello":"world","items":[1,2,3]}'></textarea>
             <div class="action-row"><button class="button button-primary" type="button" data-json-action="format" data-i18n="formatJson">Format JSON</button><button class="button button-secondary" type="button" data-json-action="minify" data-i18n="minifyJson">Minify</button></div>
@@ -99,7 +105,7 @@
           </section>
 
           <section class="tool-panel" id="panel-base64" data-panel="base64" hidden>
-            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3>Base64 encoder / decoder</h3><p data-i18n="base64Desc">Convert text to Base64 and back, including Unicode.</p></div><span class="panel-number">03 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3>Base64 encoder / decoder</h3><p data-i18n="base64Desc">Convert text to Base64 and back, including Unicode.</p></div><span class="panel-number">03 / 13</span></div>
             <label for="base64-input" data-i18n="inputText">Input text</label><textarea id="base64-input" rows="6" placeholder="Type or paste text…"></textarea>
             <div class="action-row"><button class="button button-primary" type="button" data-base64-action="encode" data-i18n="encode">Encode ↓</button><button class="button button-secondary" type="button" data-base64-action="decode" data-i18n="decode">↑ Decode</button></div>
             <div class="result-heading"><label for="base64-output" data-i18n="result">Result</label><span id="base64-status" class="field-status" aria-live="polite"></span></div><textarea id="base64-output" rows="6" readonly placeholder="Your result will appear here…"></textarea>
@@ -107,7 +113,7 @@
           </section>
 
           <section class="tool-panel" id="panel-url" data-panel="url" hidden>
-            <div class="panel-heading"><div><span class="panel-kicker">WEB</span><h3>URL encoder / decoder</h3><p data-i18n="urlDesc">Safely encode or decode URL components.</p></div><span class="panel-number">04 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker">WEB</span><h3>URL encoder / decoder</h3><p data-i18n="urlDesc">Safely encode or decode URL components.</p></div><span class="panel-number">04 / 13</span></div>
             <label for="url-input" data-i18n="inputText">Input text</label><textarea id="url-input" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
             <div class="action-row"><button class="button button-primary" type="button" data-url-action="encode" data-i18n="encode">Encode ↓</button><button class="button button-secondary" type="button" data-url-action="decode" data-i18n="decode">↑ Decode</button></div>
             <div class="result-heading"><label for="url-output" data-i18n="result">Result</label><span id="url-status" class="field-status" aria-live="polite"></span></div><textarea id="url-output" rows="6" readonly placeholder="Your result will appear here…"></textarea>
@@ -115,7 +121,7 @@
           </section>
 
           <section class="tool-panel" id="panel-password" data-panel="password" hidden>
-            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="securityCategory">SECURITY</span><h3 data-i18n="passwordTitle">Password generator</h3><p data-i18n="passwordDesc">Generate a random password on this device.</p></div><span class="panel-number">05 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="securityCategory">SECURITY</span><h3 data-i18n="passwordTitle">Password generator</h3><p data-i18n="passwordDesc">Generate a random password on this device.</p></div><span class="panel-number">05 / 13</span></div>
             <div class="range-row"><label for="password-length" data-i18n="passwordLength">Password length</label><strong id="password-length-value">20</strong></div>
             <input id="password-length" type="range" min="8" max="64" value="20">
             <div class="check-grid">
@@ -130,17 +136,76 @@
           </section>
 
           <section class="tool-panel" id="panel-uuid" data-panel="uuid" hidden>
-            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3>UUID v4 generator</h3><p data-i18n="uuidDesc">Create random unique identifiers in your browser.</p></div><span class="panel-number">06 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3>UUID v4 generator</h3><p data-i18n="uuidDesc">Create random unique identifiers in your browser.</p></div><span class="panel-number">06 / 13</span></div>
             <div class="form-row"><div class="field"><label for="uuid-count" data-i18n="howMany">How many?</label><input id="uuid-count" type="number" min="1" max="25" value="1"></div><button class="button button-primary align-end" id="generate-uuid" type="button" data-i18n="generateUuids">Generate UUIDs ↗</button></div>
             <label for="uuid-output" data-i18n="generatedUuids">Generated UUIDs</label><textarea id="uuid-output" rows="7" readonly spellcheck="false" placeholder="Your UUIDs will appear here…"></textarea>
             <div class="panel-foot"><span data-i18n="uuidLocal">Uses cryptographically secure browser randomness.</span><button class="text-button" type="button" data-copy="uuid-output" data-i18n="copyResult">Copy result ↗</button></div>
           </section>
 
           <section class="tool-panel" id="panel-discount" data-panel="discount" hidden>
-            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="everydayCategory">EVERYDAY</span><h3 data-i18n="discountTitle">Discount calculator</h3><p data-i18n="discountDesc">Quickly see the savings and final price.</p></div><span class="panel-number">07 / 07</span></div>
+            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="everydayCategory">EVERYDAY</span><h3 data-i18n="discountTitle">Discount calculator</h3><p data-i18n="discountDesc">Quickly see the savings and final price.</p></div><span class="panel-number">07 / 13</span></div>
             <div class="form-row"><div class="field"><label for="original-price" data-i18n="originalPrice">Original price</label><input id="original-price" type="number" min="0" step="0.01" value="250000" inputmode="decimal"></div><div class="field"><label for="discount-rate" data-i18n="discountRate">Discount (%)</label><input id="discount-rate" type="number" min="0" max="100" step="0.1" value="20" inputmode="decimal"></div></div>
             <div class="calc-result"><div><span data-i18n="youSave">YOU SAVE</span><strong id="discount-savings">—</strong></div><div><span data-i18n="finalPrice">FINAL PRICE</span><strong id="discount-final">—</strong></div></div>
             <p class="fine-print" data-i18n="discountNote">Calculation only. Taxes, shipping, and store-specific rules may change the checkout total.</p>
+          </section>
+
+          <section class="tool-panel" id="panel-qr" data-panel="qr" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">SHARE</span><h3 data-i18n="qrTitle">QR Code generator</h3><p data-i18n="qrDesc">Turn a link or short message into a scannable QR code.</p></div><span class="panel-number">08 / 13</span></div>
+            <label for="qr-input" data-i18n="qrContent">Text or URL</label>
+            <textarea id="qr-input" rows="4" maxlength="1800" placeholder="https://example.com"></textarea>
+            <div class="form-row"><div class="field"><label for="qr-level" data-i18n="qrCorrection">Error correction</label><select id="qr-level"><option value="M">Medium</option><option value="L">Low</option><option value="Q">Quartile</option><option value="H">High</option></select></div><button class="button button-primary align-end" id="generate-qr" type="button" data-i18n="generateQr">Generate QR ↗</button></div>
+            <div class="qr-result"><canvas id="qr-canvas" width="280" height="280" aria-label="Generated QR code"></canvas><div><strong id="qr-status" aria-live="polite" data-i18n="qrReady">Your QR code will appear here.</strong><a id="qr-download" class="button button-secondary" download="sakutools-qr.png" hidden data-i18n="downloadPng">Download PNG</a></div></div>
+            <p class="fine-print" data-i18n="qrLocal">Generated in your browser. Keep QR content short enough for reliable scanning.</p>
+          </section>
+
+          <section class="tool-panel" id="panel-color" data-panel="color" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">DESIGN</span><h3 data-i18n="colorTitle">Color picker & converter</h3><p data-i18n="colorDesc">Choose a color and copy HEX, RGB, or HSL values.</p></div><span class="panel-number">09 / 13</span></div>
+            <div class="color-preview" id="color-preview"><input id="color-picker" type="color" value="#A6F06E" aria-label="Choose a color"><div><strong id="color-name">#A6F06E</strong><span data-i18n="colorPreview">Live color preview</span></div></div>
+            <label for="color-hex" data-i18n="hexColor">HEX color</label><div class="copy-field"><input id="color-hex" type="text" value="#A6F06E" maxlength="7" spellcheck="false"><button class="text-button" type="button" data-copy="color-hex" data-i18n="copyValue">Copy</button></div>
+            <div class="color-values"><div><span>RGB</span><strong id="color-rgb">166, 240, 110</strong><button class="text-button" id="copy-rgb" type="button" data-i18n="copyValue">Copy</button></div><div><span>HSL</span><strong id="color-hsl">90, 80%, 69%</strong><button class="text-button" id="copy-hsl" type="button" data-i18n="copyValue">Copy</button></div></div>
+            <p class="fine-print" data-i18n="colorLocal">Color conversion runs locally. Browser color picker appearance may vary.</p>
+          </section>
+
+          <section class="tool-panel" id="panel-compress" data-panel="compress" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">IMAGE TOOLS</span><h3 data-i18n="compressTitle">Image compressor</h3><p data-i18n="compressDesc">Reduce image file size without uploading it.</p></div><span class="panel-number">10 / 13</span></div>
+            <label for="compress-file" data-i18n="chooseImage">Choose an image (max 20 MB)</label><input id="compress-file" class="file-input" type="file" accept="image/jpeg,image/png,image/webp">
+            <div class="form-row"><div class="field"><label for="compress-quality" data-i18n="quality">Quality</label><div class="range-row"><input id="compress-quality" type="range" min="10" max="100" value="80"><strong id="compress-quality-value">80%</strong></div></div><div class="field"><label for="compress-format" data-i18n="outputFormat">Output format</label><select id="compress-format"><option value="image/webp">WebP</option><option value="image/jpeg">JPEG</option></select></div></div>
+            <button class="button button-primary" id="run-compress" type="button" data-i18n="compressImage">Compress image ↗</button>
+            <div class="image-result" id="compress-result" hidden><img id="compress-preview" alt="Compressed image preview"><div><strong id="compress-stats"></strong><a id="compress-download" class="button button-secondary" download="sakutools-compressed.webp" data-i18n="downloadImage">Download image</a></div></div>
+            <p id="compress-status" class="field-status" role="status" aria-live="polite"></p><p class="fine-print" data-i18n="imageLocal">Images are processed locally in this browser. Animated images are converted to a still image.</p>
+          </section>
+
+          <section class="tool-panel" id="panel-resize" data-panel="resize" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">IMAGE TOOLS</span><h3 data-i18n="resizeTitle">Image resizer</h3><p data-i18n="resizeDesc">Resize an image to the dimensions you need.</p></div><span class="panel-number">11 / 13</span></div>
+            <label for="resize-file" data-i18n="chooseImage">Choose an image (max 20 MB)</label><input id="resize-file" class="file-input" type="file" accept="image/jpeg,image/png,image/webp">
+            <div class="form-row"><div class="field"><label for="resize-width" data-i18n="widthPx">Width (px)</label><input id="resize-width" type="number" min="1" max="8192" placeholder="Width"></div><div class="field"><label for="resize-height" data-i18n="heightPx">Height (px)</label><input id="resize-height" type="number" min="1" max="8192" placeholder="Height"></div></div>
+            <div class="check-grid one-check"><label><input id="resize-ratio" type="checkbox" checked><span data-i18n="keepRatio">Keep aspect ratio</span></label></div>
+            <div class="form-row"><div class="field"><label for="resize-format" data-i18n="outputFormat">Output format</label><select id="resize-format"><option value="image/webp">WebP</option><option value="image/jpeg">JPEG</option><option value="image/png">PNG</option></select></div><div class="field"><label for="resize-quality" data-i18n="quality">Quality</label><input id="resize-quality" type="range" min="10" max="100" value="90"></div></div>
+            <button class="button button-primary" id="run-resize" type="button" data-i18n="resizeImage">Resize image ↗</button>
+            <div class="image-result" id="resize-result" hidden><img id="resize-preview" alt="Resized image preview"><div><strong id="resize-stats"></strong><a id="resize-download" class="button button-secondary" download="sakutools-resized.webp" data-i18n="downloadImage">Download image</a></div></div>
+            <p id="resize-status" class="field-status" role="status" aria-live="polite"></p><p class="fine-print" data-i18n="imageLocal">Images are processed locally in this browser. Animated images are converted to a still image.</p>
+          </section>
+
+          <section class="tool-panel" id="panel-markdown" data-panel="markdown" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">WRITING</span><h3 data-i18n="markdownTitle">Markdown editor</h3><p data-i18n="markdownDesc">Write Markdown and preview a safe, formatted version.</p></div><span class="panel-number">12 / 13</span></div>
+            <label for="markdown-input" data-i18n="markdownInput">Markdown source</label><textarea id="markdown-input" rows="12" spellcheck="false"># Hello, SakuTools!
+
+Write **bold text**, *italic text*, or inline code.
+
+- First item
+- Second item
+
+[Visit GitHub](https://github.com)</textarea>
+            <div class="result-heading"><label data-i18n="markdownPreview">Live preview</label><span class="field-status" data-i18n="markdownSafe">HTML is escaped for safety</span></div><article id="markdown-preview" class="markdown-preview"></article>
+            <p class="fine-print" data-i18n="markdownLocal">Preview is generated locally. Raw HTML is not rendered.</p>
+          </section>
+
+          <section class="tool-panel" id="panel-timestamp" data-panel="timestamp" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">DEVELOPER</span><h3 data-i18n="timestampTitle">Timestamp converter</h3><p data-i18n="timestampDesc">Convert Unix timestamps and local date/time values.</p></div><span class="panel-number">13 / 13</span></div>
+            <label for="timestamp-input" data-i18n="unixTimestamp">Unix timestamp (seconds or milliseconds)</label><input id="timestamp-input" type="number" placeholder="e.g. 1735689600">
+            <div class="timestamp-output"><div><span>ISO 8601 (UTC)</span><strong id="timestamp-iso">—</strong><button class="text-button" id="copy-timestamp-iso" type="button" data-i18n="copyValue">Copy</button></div><div><span data-i18n="localDateTime">Local date & time</span><strong id="timestamp-local">—</strong></div><div><span>Unix seconds</span><strong id="timestamp-seconds">—</strong></div><div><span>Unix milliseconds</span><strong id="timestamp-ms">—</strong></div></div>
+            <div class="divider-label" data-i18n="dateToUnix">Date/time to Unix timestamp</div><label for="datetime-input" data-i18n="chooseDateTime">Choose local date and time</label><input id="datetime-input" type="datetime-local"><div class="timestamp-output compact"><div><span>Unix seconds</span><strong id="date-seconds">—</strong></div><div><span>Unix milliseconds</span><strong id="date-ms">—</strong><button class="text-button" id="copy-date-ms" type="button" data-i18n="copyValue">Copy</button></div></div>
+            <p class="fine-print" data-i18n="timestampLocal">Timestamp conversions use your device local timezone for local display; ISO output is UTC.</p>
           </section>
         </div>
       </div>
