@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sakutools-shell-v3';
+const CACHE_NAME = 'sakutools-shell-v4';
 const APP_SHELL = [
   './', './index.html', './manifest.webmanifest',
   './assets/css/styles.css', './assets/js/app.js', './assets/js/core.js', './assets/js/vendor/qrcode.mjs', './assets/js/vendor/qrcode_UTF8.mjs',
@@ -17,6 +17,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
+  const url = new URL(event.request.url);
+  const isAppCode = event.request.mode === 'navigate' || /\\.(?:html|js|css)$/.test(url.pathname);
+  if (isAppCode) {
+    event.respondWith(fetch(event.request).then((response) => {
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+      }
+      return response;
+    }).catch(async () => (await caches.match(event.request)) || (await caches.match('./index.html'))));
+    return;
+  }
   event.respondWith(caches.match(event.request).then((cached) => {
     if (cached) return cached;
     return fetch(event.request).then((response) => {
