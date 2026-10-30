@@ -133,3 +133,71 @@ export function calculateDiscount(price, percent) {
 export function formatCurrency(value, locale = 'en-US', currency = 'USD') {
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value);
 }
+
+
+export function normalizeHexColor(value) {
+  let hex = String(value ?? '').trim().replace(/^#/u, '');
+  if (/^[0-9a-f]{3}$/iu.test(hex)) hex = [...hex].map((char) => char + char).join('');
+  if (!/^[0-9a-f]{6}$/iu.test(hex)) throw new Error('Enter a valid 3- or 6-digit HEX color.');
+  return `#${hex.toUpperCase()}`;
+}
+
+export function hexToRgb(value) {
+  const hex = normalizeHexColor(value).slice(1);
+  return {
+    r: Number.parseInt(hex.slice(0, 2), 16),
+    g: Number.parseInt(hex.slice(2, 4), 16),
+    b: Number.parseInt(hex.slice(4, 6), 16),
+  };
+}
+
+export function rgbToHsl(red, green, blue) {
+  const values = [red, green, blue].map(Number);
+  if (values.some((value) => !Number.isFinite(value) || value < 0 || value > 255)) {
+    throw new RangeError('RGB values must be between 0 and 255.');
+  }
+  const [r, g, b] = values.map((value) => value / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+  let h = 0;
+  let saturation = 0;
+  const lightness = (max + min) / 2;
+  if (delta !== 0) {
+    saturation = delta / (1 - Math.abs(2 * lightness - 1));
+    if (max === r) h = ((g - b) / delta) % 6;
+    else if (max === g) h = (b - r) / delta + 2;
+    else h = (r - g) / delta + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  return { h: Math.round(h), s: Math.round(saturation * 100), l: Math.round(lightness * 100) };
+}
+
+export function timestampToDate(value) {
+  const input = String(value ?? '').trim();
+  if (!input) throw new Error('Enter a Unix timestamp.');
+  const numeric = Number(input);
+  if (!Number.isFinite(numeric)) throw new Error('Timestamp must be a valid number.');
+  const milliseconds = Math.abs(numeric) >= 1e12 ? numeric : numeric * 1000;
+  const date = new Date(milliseconds);
+  if (Number.isNaN(date.getTime())) throw new RangeError('Timestamp is outside the supported date range.');
+  return {
+    milliseconds: date.getTime(),
+    seconds: Math.floor(date.getTime() / 1000),
+    iso: date.toISOString(),
+    local: date.toLocaleString(),
+  };
+}
+
+export function dateToTimestamp(value) {
+  const input = String(value ?? '').trim();
+  if (!input) throw new Error('Choose a date and time.');
+  const milliseconds = new Date(input).getTime();
+  if (!Number.isFinite(milliseconds)) throw new Error('Enter a valid date and time.');
+  return {
+    milliseconds,
+    seconds: Math.floor(milliseconds / 1000),
+    iso: new Date(milliseconds).toISOString(),
+  };
+}
