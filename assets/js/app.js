@@ -423,6 +423,7 @@ $('#run-resize').addEventListener('click', async () => {
   } catch (error) { status.textContent = error.message; clearImageResult('resize'); }
 });
 
+clearImageResult('compress'); clearImageResult('resize');
 applyLanguage(); updateDiscount(); updateColorValues('#A6F06E');
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
