@@ -1,11 +1,20 @@
 # SakuTools — Small tools, big help
 
-**Current version: v1.1.1**
+**Current version: v1.1.2**
 
 A free, bilingual (English / Bahasa Indonesia), privacy-first toolbox for everyday tasks and digital work. SakuTools runs in your browser: no account, no app backend, no tool-input uploads, and no remote runtime dependencies.
 
 **Live site:** https://denynurcahyanto1.github.io/saku-tools/ (available after GitHub Pages deployment succeeds)
 
+
+## v1.1.2 — Ignore stale image processing results
+
+- Prevent Image Compressor and Image Resizer from showing output or errors for a file that the user has since changed or cleared.
+- Prevent a slower image decode from overwriting dimensions for a newer Image Resizer selection.
+- Refresh the asset and service worker cache versions.
+- Automated tests and browser verification are pending before publishing.
+
+See [release notes for v1.1.2](RELEASE_NOTES_v1.1.2.md).
 
 ## v1.1.1 — Image tool bug fix
 
