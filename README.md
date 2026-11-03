@@ -1,11 +1,20 @@
 # SakuTools — Small tools, big help
 
-**Current version: v1.1.1**
+**Current version: v1.1.2**
 
 A free, bilingual (English / Bahasa Indonesia), privacy-first toolbox for everyday tasks and digital work. SakuTools runs in your browser: no account, no app backend, no tool-input uploads, and no remote runtime dependencies.
 
 **Live site:** https://denynurcahyanto1.github.io/saku-tools/ (available after GitHub Pages deployment succeeds)
 
+
+## v1.1.2 — Ignore stale image processing results
+
+- Prevent Image Compressor and Image Resizer from showing output or errors for a file that the user has since changed or cleared.
+- Prevent a slower image decode from overwriting dimensions for a newer Image Resizer selection.
+- Refresh the asset and service worker cache versions.
+- Automated tests and browser verification are pending before publishing.
+
+See [release notes for v1.1.2](RELEASE_NOTES_v1.1.2.md).
 
 ## v1.1.1 — Image tool bug fix
 
@@ -59,11 +68,15 @@ For development tests (Node.js 20+):
 npm test
 ```
 
-## Deploy to GitHub Pages
+## CI and verified releases
 
-The repository includes a GitHub Actions workflow at `.github/workflows/deploy.yml`. Set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. Every push to `main` then publishes the static site, and the workflow can also be run manually from the Actions tab.
+Pull requests to `main` run the automated test suite. Configure branch protection to require the `CI / test` check and a pull request before merging.
 
-The workflow uses GitHub's Pages artifact deployment pattern with `pages: write` and `id-token: write` permissions.
+Production deployment no longer runs on every push to `main`. To publish a release, create a version tag on a commit in `main` that matches the version in `package.json`, then run **Verified release** from the GitHub Actions tab and enter the tag (for example, `v1.1.2`). The workflow validates the tag and package version, runs `npm test`, then waits for approval in the `github-pages` environment before creating the GitHub Release and deploying to Pages.
+
+Repository setup is required: protect `main` by requiring pull requests and the `CI / test` status check, and add at least one required reviewer to **Settings → Environments → github-pages**. Without a required reviewer on that environment, deployment will not pause for approval.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full release and repository setup procedure.
 
 ## Project structure
 

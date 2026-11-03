@@ -305,7 +305,7 @@ function blobToDataUrl(blob) {
     reader.readAsDataURL(blob);
   });
 }
-async function setImageResult(prefix, blob, filename, originalSize, width, height) {
+async function setImageResult(prefix, blob, filename, originalSize, width, height, isCurrent = () => true) {
   if (!(blob instanceof Blob) || blob.size === 0) throw new Error(language === 'id' ? 'Hasil gambar kosong. Coba format lain.' : 'The generated image is empty. Try another format.');
   const preview = $(`#${prefix}-preview`);
   const download = $(`#${prefix}-download`);
@@ -315,13 +315,23 @@ async function setImageResult(prefix, blob, filename, originalSize, width, heigh
   try {
     // Use a data URL for preview: this avoids stale/blocked blob URLs in browser or PWA caches.
     const previewUrl = await blobToDataUrl(blob);
+    if (!isCurrent()) { URL.revokeObjectURL(downloadUrl); return false; }
+    let previewLoaded;
+    let previewFailed;
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error(language === 'id' ? 'Pratinjau gagal dimuat. Coba lagi atau gunakan format lain.' : 'The preview could not be loaded. Try again or choose another format.')), 10000);
-      preview.onload = () => { clearTimeout(timeout); resolve(); };
-      preview.onerror = () => { clearTimeout(timeout); reject(new Error(language === 'id' ? 'Browser tidak dapat menampilkan hasil gambar.' : 'The browser could not display the generated image.')); };
+      previewLoaded = () => { clearTimeout(timeout); resolve(); };
+      previewFailed = () => { clearTimeout(timeout); reject(new Error(language === 'id' ? 'Browser tidak dapat menampilkan hasil gambar.' : 'The browser could not display the generated image.')); };
+      preview.onload = previewLoaded;
+      preview.onerror = previewFailed;
       preview.src = previewUrl;
       if (preview.complete && preview.naturalWidth > 0) { clearTimeout(timeout); resolve(); }
     });
+    if (!isCurrent()) {
+      if (preview.getAttribute('src') === previewUrl) preview.removeAttribute('src');
+      URL.revokeObjectURL(downloadUrl);
+      return false;
+    }
     imageObjectUrls.set(prefix, downloadUrl);
     download.href = downloadUrl;
     download.download = filename;
@@ -332,15 +342,18 @@ async function setImageResult(prefix, blob, filename, originalSize, width, heigh
     $(`#${prefix}-stats`).textContent = `${width} × ${height}px · ${formatBytes(originalSize)} → ${formatBytes(blob.size)}${sizeNote}`;
     result.hidden = false;
     if (previous) URL.revokeObjectURL(previous);
+    return true;
   } catch (error) {
     URL.revokeObjectURL(downloadUrl);
-    preview.removeAttribute('src');
-    download.removeAttribute('href');
-    result.hidden = true;
+    if (isCurrent()) {
+      preview.removeAttribute('src');
+      download.removeAttribute('href');
+      result.hidden = true;
+    }
     throw error;
   } finally {
-    preview.onload = null;
-    preview.onerror = null;
+    if (preview.onload === previewLoaded) preview.onload = null;
+    if (preview.onerror === previewFailed) preview.onerror = null;
   }
 }
 function formatBytes(bytes) {
@@ -380,41 +393,52 @@ async function renderImage(file, width, height, type, quality) {
 }
 function outputExtension(type) { return type === 'image/webp' ? 'webp' : type === 'image/png' ? 'png' : 'jpg'; }
 
+let compressJob = 0;
 $('#compress-file').addEventListener('change', () => {
+  compressJob++;
   clearImageResult('compress');
   const file = $('#compress-file').files[0];
   $('#compress-status').textContent = file ? `${file.name} · ${formatBytes(file.size)}` : '';
 });
 $('#compress-quality').addEventListener('input', () => { $('#compress-quality-value').textContent = `${$('#compress-quality').value}%`; });
 $('#run-compress').addEventListener('click', async () => {
+  const job = ++compressJob;
+  const file = $('#compress-file').files[0];
+  const isCurrent = () => job === compressJob && $('#compress-file').files[0] === file;
   const status = $('#compress-status'); clearImageResult('compress'); status.textContent = language === 'id' ? 'Memproses gambar…' : 'Processing image…';
   try {
-    const file = $('#compress-file').files[0];
     const bitmap = await getImageBitmap(file);
     const { width, height } = bitmap; bitmap.close();
     const type = $('#compress-format').value;
     const result = await renderImage(file, width, height, type, Number($('#compress-quality').value) / 100);
-    await setImageResult('compress', result.blob, `sakutools-compressed.${outputExtension(result.actualType)}`, file.size, width, height);
+    if (!isCurrent()) return;
+    const shown = await setImageResult('compress', result.blob, `sakutools-compressed.${outputExtension(result.actualType)}`, file.size, width, height, isCurrent);
+    if (!shown || !isCurrent()) return;
     status.textContent = language === 'id' ? 'Gambar berhasil dikompres.' : 'Image compressed successfully.';
-  } catch (error) { status.textContent = error.message; clearImageResult('compress'); }
+  } catch (error) { if (isCurrent()) { status.textContent = error.message; clearImageResult('compress'); } }
 });
 let resizeOriginal = null;
+let resizeSelectionJob = 0;
+let resizeProcessJob = 0;
 $('#resize-file').addEventListener('change', async () => {
+  const job = ++resizeSelectionJob;
+  resizeProcessJob++;
+  const file = $('#resize-file').files[0];
+  clearImageResult('resize');
+  resizeOriginal = null;
+  $('#resize-width').value = '';
+  $('#resize-height').value = '';
+  $('#resize-status').textContent = '';
+  const isCurrent = () => job === resizeSelectionJob && $('#resize-file').files[0] === file;
   try {
-    const file = $('#resize-file').files[0];
-    clearImageResult('resize');
-    $('#resize-status').textContent = '';
-    if (!file) {
-      resizeOriginal = null;
-      $('#resize-width').value = '';
-      $('#resize-height').value = '';
-      return;
-    }
+    if (!file) return;
     const bitmap = await getImageBitmap(file);
+    if (!isCurrent()) { bitmap.close(); return; }
     resizeOriginal = { width: bitmap.width, height: bitmap.height };
     $('#resize-width').value = bitmap.width; $('#resize-height').value = bitmap.height;
     bitmap.close(); $('#resize-status').textContent = `${resizeOriginal.width} × ${resizeOriginal.height}px`;
   } catch (error) {
+    if (!isCurrent()) return;
     resizeOriginal = null;
     clearImageResult('resize');
     $('#resize-width').value = '';
@@ -429,15 +453,19 @@ $('#resize-height').addEventListener('input', () => {
   if ($('#resize-ratio').checked && resizeOriginal && Number($('#resize-height').value) > 0) $('#resize-width').value = Math.max(1, Math.round(Number($('#resize-height').value) * resizeOriginal.width / resizeOriginal.height));
 });
 $('#run-resize').addEventListener('click', async () => {
+  const job = ++resizeProcessJob;
+  const file = $('#resize-file').files[0];
+  const isCurrent = () => job === resizeProcessJob && $('#resize-file').files[0] === file;
   const status = $('#resize-status'); clearImageResult('resize'); status.textContent = language === 'id' ? 'Mengubah ukuran gambar…' : 'Resizing image…';
   try {
-    const file = $('#resize-file').files[0];
     const width = Number($('#resize-width').value); const height = Number($('#resize-height').value);
     const type = $('#resize-format').value;
     const result = await renderImage(file, width, height, type, Number($('#resize-quality').value) / 100);
-    await setImageResult('resize', result.blob, `sakutools-resized.${outputExtension(result.actualType)}`, file.size, width, height);
+    if (!isCurrent()) return;
+    const shown = await setImageResult('resize', result.blob, `sakutools-resized.${outputExtension(result.actualType)}`, file.size, width, height, isCurrent);
+    if (!shown || !isCurrent()) return;
     status.textContent = language === 'id' ? 'Gambar berhasil diubah ukurannya.' : 'Image resized successfully.';
-  } catch (error) { status.textContent = error.message; clearImageResult('resize'); }
+  } catch (error) { if (isCurrent()) { status.textContent = error.message; clearImageResult('resize'); } }
 });
 
 clearImageResult('compress'); clearImageResult('resize');
