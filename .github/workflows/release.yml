@@ -40,7 +40,7 @@ jobs:
         env:
           RELEASE_TAG: ${{ inputs.tag }}
         run: |
-          git fetch origin main --no-tags
+          git fetch origin main:refs/remotes/origin/main --no-tags
           git merge-base --is-ancestor "$GITHUB_SHA" origin/main
           PACKAGE_VERSION="v$(node -p "require('./package.json').version")"
           if [[ "$PACKAGE_VERSION" != "$RELEASE_TAG" ]]; then
