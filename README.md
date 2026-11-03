@@ -59,11 +59,15 @@ For development tests (Node.js 20+):
 npm test
 ```
 
-## Deploy to GitHub Pages
+## CI and verified releases
 
-The repository includes a GitHub Actions workflow at `.github/workflows/deploy.yml`. Set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. Every push to `main` then publishes the static site, and the workflow can also be run manually from the Actions tab.
+Pull requests to `main` run the automated test suite. Configure branch protection to require the `CI / test` check and a pull request before merging.
 
-The workflow uses GitHub's Pages artifact deployment pattern with `pages: write` and `id-token: write` permissions.
+Production deployment no longer runs on every push to `main`. To publish a release, create a version tag on a commit in `main` that matches the version in `package.json`, then run **Verified release** from the GitHub Actions tab and enter the tag (for example, `v1.1.2`). The workflow validates the tag and package version, runs `npm test`, then waits for approval in the `github-pages` environment before creating the GitHub Release and deploying to Pages.
+
+Repository setup is required: protect `main` by requiring pull requests and the `CI / test` status check, and add at least one required reviewer to **Settings → Environments → github-pages**. Without a required reviewer on that environment, deployment will not pause for approval.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full release and repository setup procedure.
 
 ## Project structure
 
