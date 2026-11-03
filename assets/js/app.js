@@ -414,16 +414,18 @@ $('#run-compress').addEventListener('click', async () => {
   } catch (error) { if (isCurrent()) { status.textContent = error.message; clearImageResult('compress'); } }
 });
 let resizeOriginal = null;
-let resizeJob = 0;
+let resizeSelectionJob = 0;
+let resizeProcessJob = 0;
 $('#resize-file').addEventListener('change', async () => {
-  const job = ++resizeJob;
+  const job = ++resizeSelectionJob;
+  resizeProcessJob++;
   const file = $('#resize-file').files[0];
   clearImageResult('resize');
   resizeOriginal = null;
   $('#resize-width').value = '';
   $('#resize-height').value = '';
   $('#resize-status').textContent = '';
-  const isCurrent = () => job === resizeJob && $('#resize-file').files[0] === file;
+  const isCurrent = () => job === resizeSelectionJob && $('#resize-file').files[0] === file;
   try {
     if (!file) return;
     const bitmap = await getImageBitmap(file);
@@ -447,9 +449,9 @@ $('#resize-height').addEventListener('input', () => {
   if ($('#resize-ratio').checked && resizeOriginal && Number($('#resize-height').value) > 0) $('#resize-width').value = Math.max(1, Math.round(Number($('#resize-height').value) * resizeOriginal.width / resizeOriginal.height));
 });
 $('#run-resize').addEventListener('click', async () => {
-  const job = ++resizeJob;
+  const job = ++resizeProcessJob;
   const file = $('#resize-file').files[0];
-  const isCurrent = () => job === resizeJob && $('#resize-file').files[0] === file;
+  const isCurrent = () => job === resizeProcessJob && $('#resize-file').files[0] === file;
   const status = $('#resize-status'); clearImageResult('resize'); status.textContent = language === 'id' ? 'Mengubah ukuran gambar…' : 'Resizing image…';
   try {
     const width = Number($('#resize-width').value); const height = Number($('#resize-height').value);
