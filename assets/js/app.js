@@ -316,10 +316,14 @@ async function setImageResult(prefix, blob, filename, originalSize, width, heigh
     // Use a data URL for preview: this avoids stale/blocked blob URLs in browser or PWA caches.
     const previewUrl = await blobToDataUrl(blob);
     if (!isCurrent()) { URL.revokeObjectURL(downloadUrl); return false; }
+    let previewLoaded;
+    let previewFailed;
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error(language === 'id' ? 'Pratinjau gagal dimuat. Coba lagi atau gunakan format lain.' : 'The preview could not be loaded. Try again or choose another format.')), 10000);
-      preview.onload = () => { clearTimeout(timeout); resolve(); };
-      preview.onerror = () => { clearTimeout(timeout); reject(new Error(language === 'id' ? 'Browser tidak dapat menampilkan hasil gambar.' : 'The browser could not display the generated image.')); };
+      previewLoaded = () => { clearTimeout(timeout); resolve(); };
+      previewFailed = () => { clearTimeout(timeout); reject(new Error(language === 'id' ? 'Browser tidak dapat menampilkan hasil gambar.' : 'The browser could not display the generated image.')); };
+      preview.onload = previewLoaded;
+      preview.onerror = previewFailed;
       preview.src = previewUrl;
       if (preview.complete && preview.naturalWidth > 0) { clearTimeout(timeout); resolve(); }
     });
@@ -348,8 +352,8 @@ async function setImageResult(prefix, blob, filename, originalSize, width, heigh
     }
     throw error;
   } finally {
-    preview.onload = null;
-    preview.onerror = null;
+    if (preview.onload === previewLoaded) preview.onload = null;
+    if (preview.onerror === previewFailed) preview.onerror = null;
   }
 }
 function formatBytes(bytes) {
